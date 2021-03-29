@@ -1,4 +1,4 @@
 # SpotifyAPI_with_python
-Retreiving Information with Spotify API 
+Retreive Information with Spotify API 
 
 *GET YOUR TOKEN AND USER_ID FROM SPOTIFY DEVELOPERS WEBSITE AND FROM YOUR PROFILE PAGE*
