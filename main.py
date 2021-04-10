@@ -5,7 +5,7 @@ import json
 # user_id = input('Enter your spotify username: ')
 
 '''
-ENTER YOUR USER ID HERE
+ENTER YOUR USER ID IN PLAYLIST_ENDPOINT
 '''
 
 PLAYLIST_ENDPOINT = "https://api.spotify.com/v1/users/{user_id}/playlists"
