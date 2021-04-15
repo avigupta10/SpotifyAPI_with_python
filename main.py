@@ -1,6 +1,5 @@
 import requests
 from Spotify_Client_Secrets import *
-import webbrowser
 import time
 import urllib.parse as urlparse
 from urllib.parse import parse_qs
