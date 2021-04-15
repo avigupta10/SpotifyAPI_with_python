@@ -1,5 +1,9 @@
 import requests
 from Spotify_Client_Secrets import *
+import webbrowser
+import time
+import urllib.parse as urlparse
+from urllib.parse import parse_qs
 import json
 
 # user_id = input('Enter your spotify username: ')
@@ -12,6 +16,64 @@ CURRENT_SONG_ENDPOINT = "https://api.spotify.com/v1/me/player/currently-playing"
 SEARCH_ENDPOINT = "	https://api.spotify.com/v1/search"
 USER_ALBUMS_ENDPOINT = "https://api.spotify.com/v1/me/albums"
 BASE_URL = "https://api.spotify.com/v1/me/"
+
+
+def get_auth_url():
+    scopes = 'user-read-playback-state user-modify-playback-state user-read-currently-playing'
+    response = requests.get('https://accounts.spotify.com/authorize', params={
+        'client_id': CLIENT_ID,
+        'response_type': 'code',
+        'scope': scopes,
+        'redirect_uri': REDIRECT_URI
+    }).request.url
+    return response
+
+
+print('Go And Login---->', get_auth_url())
+time.sleep(5)
+redirect_response = input('Paste the full redirect URL here(Starting with 127.0.0.1): ')
+parsed = urlparse.urlparse(redirect_response)
+code = parse_qs(parsed.query)['code'][0]
+
+# print(get_auth_url())
+
+name = []
+
+
+def spotify_callback():
+    response = requests.post('https://accounts.spotify.com/api/token', data={
+        'grant_type': 'authorization_code',
+        'code': code,
+        'redirect_uri': REDIRECT_URI,
+        'client_id': CLIENT_ID,
+        'client_secret': CLIENT_SECRET,
+    }).json()
+
+    access_token = response.get('access_token')
+    refresh_token = response.get('refresh_token')
+
+    if access_token:
+        resp = requests.get(
+            "https://api.spotify.com/v1/me",
+            headers={
+                'Content-Type': 'application/json',
+                "Authorization": f"Bearer {access_token}"
+            },
+        )
+        name.append(resp.json()['display_name'])
+        r = requests.get(
+            "https://api.spotify.com/v1/search" + "?query=travis%20scott&type=track&limit=50",
+            headers={
+                'Content-Type': 'application/json',
+                "Authorization": f"Bearer {access_token}"
+            },
+        )
+        return response
+
+    return {}
+
+
+ACCESS_TOKEN = spotify_callback()['access_token']
 
 
 def user_top_artists():
@@ -158,6 +220,7 @@ i = 1
 
 while i > 0:
     print("*********************************************")
+    print('WELCOME ', name[0])
     print("*********************************************")
     print('Welcome to Spot-Info')
     print("What do you want ?")
@@ -214,10 +277,12 @@ while i > 0:
         print(f"Name -> {d['item']['name']}")
         print(f"playing? -> {d['is_playing']}")
         print(f"Explicit -> {d['item']['explicit']}")
-        print(f"{d['item']['duration_ms']/60000} minutes")
+        print(f"{d['item']['duration_ms'] / 60000} minutes")
     else:
         print('wrong choice')
     inpu = input("Do you want to continue Y or N")
-    if inpu == "Y":
+    if inpu == "Y" or "y":
         continue
+    elif inpu == "N" or "n":
+        quit()
 i = i + 1
