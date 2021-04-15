@@ -8,7 +8,11 @@ import json
 
 # user_id = input('Enter your spotify username: ')
 
-PLAYLIST_ENDPOINT = "https://api.spotify.com/v1/users/317vxru6yl74egib5kuayaf4qt44/playlists"
+'''
+ENTER YOUR USER ID IN PLAYLIST_ENDPOINT
+'''
+
+PLAYLIST_ENDPOINT = "https://api.spotify.com/v1/users/{user_id}/playlists"
 PLAY_ENDPOINT = "https://api.spotify.com/v1/me/player/play"
 TOP_ENDPOINT = "https://api.spotify.com/v1/me/top/"
 PAUSE_ENDPOINT = "https://api.spotify.com/v1/me/player/pause"
