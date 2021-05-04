@@ -1,3 +1,8 @@
-CLIENT_ID = "a6010180783745428e7b3de19ba61408"
-CLIENT_SECRET = "d907dfd441294e3d94fc43a172c70249"
-REDIRECT_URI = "http://127.0.0.1:8000/callback/"
+from dotenv import load_dotenv
+import os
+
+
+load_dotenv()
+CLIENT_ID = os.environ.get("CLIENT_ID")
+CLIENT_SECRET = os.environ.get("CLIENT_SECRET")
+REDIRECT_URI = os.environ.get("REDIRECT_URI")
